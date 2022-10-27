@@ -10,20 +10,17 @@ import {
     Patch,
     Post,
     Query,
-    UseGuards,
-    UseInterceptors
+    UseGuards
 } from "@nestjs/common";
 import {AuthGuard} from "src/auth/guards/auth.guard";
 import {FilterParams, FilterResults} from "src/common/models/filters";
 import ParamsWithId from "src/common/models/params-with-id";
-import MongooseClassSerializerInterceptor from "src/utils/mongoose-class-serializer.interceptor";
 import {HasPermission} from "../permissions/decorators/has-permission.decorator";
 import {CreateUserDto} from "./dto/create-user.dto";
 import {UpdateUserDto} from "./dto/update-user.dto";
 import {User} from "./schemas/user.schema";
 import {UsersService} from "./users.service";
 
-@UseInterceptors(MongooseClassSerializerInterceptor(User))
 @Controller("users")
 export class UsersController {
     constructor(private usersService: UsersService) {}
