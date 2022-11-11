@@ -19,7 +19,9 @@ async function bootstrap() {
     app.use(cookieParser());
     app.enableCors({
         origin: appConfig.adminUrl,
-        credentials: true
+        credentials: true,
+        methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+        allowedHeaders: ["Access-Control-Allow-Origin"]
     });
     await app.listen(appConfig.port);
 }
