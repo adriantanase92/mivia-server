@@ -14,6 +14,7 @@ export class InvestigationsSeeder implements Seeder {
 
     async seed(): Promise<Investigation[]> {
         const investigations = [
+            {name: "Consultation", price: faker.commerce.price(50, 150)},
             {name: "Cardiac ablation", price: faker.commerce.price(50, 350)},
             {name: "Biopsy", price: faker.commerce.price(50, 350)},
             {name: "Bronchoscopy", price: faker.commerce.price(50, 350)},

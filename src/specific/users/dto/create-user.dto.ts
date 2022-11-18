@@ -4,9 +4,11 @@ import {
     IsEmail,
     MinLength,
     MaxLength,
-    IsPhoneNumber
+    IsPhoneNumber,
+    IsOptional
 } from "class-validator";
 import {Address} from "../schemas/address.schema";
+import {Doctor, UserType} from "../schemas/user.schema";
 
 export class CreateUserDto {
     @IsString()
@@ -41,4 +43,11 @@ export class CreateUserDto {
     @IsString()
     @IsNotEmpty()
     readonly role: string;
+
+    @IsString()
+    @IsNotEmpty()
+    readonly type: UserType;
+
+    @IsOptional()
+    readonly doctor?: Doctor;
 }

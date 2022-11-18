@@ -6,6 +6,21 @@ import * as bcrypt from "bcrypt";
 import {Role} from "src/specific/roles/schemas/role.schema";
 import {Address, AddressSchema} from "./address.schema";
 import {Factory} from "nestjs-seeder";
+import {Investigation} from "src/specific/investigations/schemas/investigation.schema";
+import {Specialization} from "./../../specializations/schemas/specialization.schema";
+
+export type UserType =
+    | "admin"
+    | "manager"
+    | "operator"
+    | "doctor"
+    | "patient"
+    | "unclassified";
+
+export interface Doctor {
+    specializations: Specialization[];
+    investigations: Investigation[];
+}
 
 export type UserDocument = User & Document;
 
@@ -100,6 +115,60 @@ export class User {
     @Prop({type: mongoose.Schema.Types.ObjectId, ref: Role.name})
     @Type(() => Role)
     role: Role;
+
+    @Factory((faker, ctx) => {
+        let type = "";
+
+        if (ctx.role.toString() === "6358485c829c6b2446a29a01") {
+            type = "manager";
+        }
+        if (ctx.role.toString() === "6358485c829c6b2446a29a02") {
+            type = "operator";
+        }
+        if (ctx.role.toString() === "6358485c829c6b2446a29a03") {
+            type = "doctor";
+        }
+        if (ctx.role.toString() === "6358485c829c6b2446a29a04") {
+            type = "pacient";
+        }
+
+        return type;
+    })
+    @Prop({
+        type: String,
+        required: true
+    })
+    type: UserType;
+
+    @Factory((faker, ctx) => {
+        if (ctx.type === "doctor")
+            return {
+                specializations: faker.helpers.arrayElements(
+                    [
+                        "Cardiology",
+                        "General surgery",
+                        "Dermatology",
+                        "Endocrinology",
+                        "Diabetes, nutrition and metabolic diseases"
+                    ],
+                    2
+                ),
+                investigations: faker.helpers.arrayElements(
+                    [
+                        "Biopsy",
+                        "Bronchoscopy",
+                        "Colonoscopy",
+                        "Physical Therapy",
+                        "Vasectomy"
+                    ],
+                    Math.floor(Math.random() * 3) + 1
+                )
+            };
+    })
+    @Prop({
+        type: Object
+    })
+    doctor?: Doctor;
 
     @Factory((faker) => faker.date.past(5))
     @Prop({

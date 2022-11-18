@@ -15,6 +15,7 @@ export class UsersSeeder implements Seeder {
             updated_at: Date.now(),
             created_at: Date.now(),
             role: new mongoose.Types.ObjectId("6358485c829c6b2446a29a00"),
+            type: "admin",
             password: bcrypt.hashSync(`${process.env.ADMIN_USER_PASSWORD}`, 12),
             email: "tanase.adrian92@gmail.com",
             address: {

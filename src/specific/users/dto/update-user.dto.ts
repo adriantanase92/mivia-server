@@ -8,6 +8,7 @@ import {
     MaxLength,
     MinLength
 } from "class-validator";
+import {Doctor} from "../schemas/user.schema";
 
 export class UpdateUserDto {
     @IsOptional()
@@ -39,4 +40,7 @@ export class UpdateUserDto {
     @IsEmail()
     @IsOptional()
     email?: string;
+
+    @IsOptional()
+    doctor?: Doctor;
 }

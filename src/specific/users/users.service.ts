@@ -44,7 +44,7 @@ export class UsersService {
         Record<string, never>,
         UserDocument
     > {
-        return this.userModel.find(options);
+        return this.userModel.find(options).select({password: 0, role: 0});
     }
 
     async findById(id: string, full = false): Promise<User> {

@@ -3,6 +3,7 @@ import {Transform, Type} from "class-transformer";
 import {Document, ObjectId} from "mongoose";
 import * as mongoose from "mongoose";
 import {Permission} from "src/specific/permissions/schemas/permission.schema";
+import {UserType} from "src/specific/users/schemas/user.schema";
 
 export type RoleDocument = Role & Document;
 
@@ -24,7 +25,7 @@ export class Role {
         trim: true,
         unique: true
     })
-    name: string;
+    name: UserType;
 
     @Prop({
         type: [{type: mongoose.Schema.Types.ObjectId, ref: Permission.name}]
