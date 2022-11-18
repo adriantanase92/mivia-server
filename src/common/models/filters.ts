@@ -17,6 +17,12 @@ export class FilterParams {
     @IsNumber()
     @Min(1)
     page?: number;
+
+    @IsOptional()
+    @Type(() => Number)
+    @IsNumber()
+    @Min(5)
+    limit?: number;
 }
 
 export interface FilterResults<T> {

@@ -34,7 +34,7 @@ export class UsersController {
 
     @Get()
     async getAllUsers(
-        @Query() {s, sort, page: pageParam}: FilterParams
+        @Query() {s, sort, page: pageParam, limit}: FilterParams
     ): Promise<FilterResults<User>> {
         let options = {};
 
@@ -52,23 +52,24 @@ export class UsersController {
         const query = this.usersService.find(options);
 
         if (sort) {
+            console.log("sort: ", sort);
             query.sort({first_name: sort as any});
         }
 
         const page: number = parseInt(pageParam as any) || 1;
-        const limit = 9;
+        const numberOfItems = limit ? limit : 10;
         const total = await this.usersService.count(options);
 
         const data = await query
-            .skip((page - 1) * limit)
-            .limit(limit)
+            .skip((page - 1) * numberOfItems)
+            .limit(numberOfItems)
             .exec();
 
         return {
             data,
             total,
             page,
-            last_page: Math.ceil(total / limit)
+            last_page: Math.ceil(total / numberOfItems)
         };
     }
 
