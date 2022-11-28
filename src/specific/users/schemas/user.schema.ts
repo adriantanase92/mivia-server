@@ -129,7 +129,7 @@ export class User {
             type = "doctor";
         }
         if (ctx.role.toString() === "6358485c829c6b2446a29a04") {
-            type = "pacient";
+            type = "patient";
         }
 
         return type;

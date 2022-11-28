@@ -2,6 +2,7 @@ import {SessionConfigService} from "src/config/session/config.service";
 import {JwtModule} from "@nestjs/jwt";
 import {Module} from "@nestjs/common";
 import {SessionConfigModule} from "src/config/session/config.module";
+import {HelpersService} from "./services/helpers.service";
 
 @Module({
     imports: [
@@ -16,7 +17,7 @@ import {SessionConfigModule} from "src/config/session/config.module";
             })
         })
     ],
-    providers: [],
-    exports: [JwtModule]
+    providers: [HelpersService],
+    exports: [JwtModule, HelpersService]
 })
 export class CommonModule {}

@@ -1,16 +1,18 @@
 import {IsNumber, Min, IsOptional, IsString} from "class-validator";
 import {Type} from "class-transformer";
 
-type Sort = "asc" | "desc";
-
 export class FilterParams {
     @IsOptional()
     @IsString()
-    s?: string;
+    search?: string;
 
     @IsOptional()
     @IsString()
-    sort?: Sort;
+    sortName?: string;
+
+    @IsOptional()
+    @IsString()
+    sortOrder?: string;
 
     @IsOptional()
     @Type(() => Number)
@@ -23,6 +25,10 @@ export class FilterParams {
     @IsNumber()
     @Min(5)
     limit?: number;
+
+    @IsOptional()
+    @IsString()
+    type?: string;
 }
 
 export interface FilterResults<T> {

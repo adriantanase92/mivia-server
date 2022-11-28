@@ -15,6 +15,7 @@ import {
 import {AuthGuard} from "src/auth/guards/auth.guard";
 import {FilterParams, FilterResults} from "src/common/models/filters";
 import ParamsWithId from "src/common/models/params-with-id";
+import {HelpersService} from "src/common/services/helpers.service";
 import {HasPermission} from "../permissions/decorators/has-permission.decorator";
 import {CreateUserDto} from "./dto/create-user.dto";
 import {UpdateUserDto} from "./dto/update-user.dto";
@@ -23,7 +24,10 @@ import {UsersService} from "./users.service";
 
 @Controller("users")
 export class UsersController {
-    constructor(private usersService: UsersService) {}
+    constructor(
+        private usersService: UsersService,
+        private helpersService: HelpersService
+    ) {}
 
     @Post()
     @HasPermission("users")
@@ -34,26 +38,40 @@ export class UsersController {
 
     @Get()
     async getAllUsers(
-        @Query() {s, sort, page: pageParam, limit}: FilterParams
+        @Query()
+        {
+            search,
+            sortName,
+            sortOrder,
+            page: pageParam,
+            limit,
+            type
+        }: FilterParams
     ): Promise<FilterResults<User>> {
         let options = {};
 
-        if (s) {
+        if (search) {
             options = {
                 $or: [
-                    {first_name: new RegExp(s.toString(), "i")},
-                    {last_name: new RegExp(s.toString(), "i")},
-                    {email: new RegExp(s.toString(), "i")},
-                    {phone: new RegExp(s.toString(), "i")}
+                    {first_name: new RegExp(search.toString(), "i")},
+                    {last_name: new RegExp(search.toString(), "i")},
+                    {email: new RegExp(search.toString(), "i")},
+                    {phone: new RegExp(search.toString(), "i")}
                 ]
             };
         }
 
+        if (type) {
+            options["$and"] = [{type}];
+        }
+
         const query = this.usersService.find(options);
 
-        if (sort) {
-            console.log("sort: ", sort);
-            query.sort({first_name: sort as any});
+        if (sortName) {
+            const sort = {};
+            sortName = sortName === "full_name" ? "first_name" : sortName;
+            sort[sortName] = sortOrder;
+            query.sort(sort);
         }
 
         const page: number = parseInt(pageParam as any) || 1;

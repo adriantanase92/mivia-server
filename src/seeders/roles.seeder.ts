@@ -62,7 +62,7 @@ export class RolesSeeder implements Seeder {
             },
             {
                 _id: new mongoose.Types.ObjectId("6358485c829c6b2446a29a04"),
-                name: "pacient",
+                name: "patient",
                 permissions: []
             },
             {
